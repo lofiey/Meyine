@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>详情页 - 无障碍设计</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="logo">
+        <div class="logo-badge">M</div>
+        <div>Meyine</div>
+      </div>
+      <div class="nav-spacer"></div>
+      <div class="nav-links">
+        <a href="index.html" class="navlink">返回主页</a>
+        <button id="themeBtn" class="theme-toggle" aria-pressed="false">🌗 主题</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container" style="padding-top: 60px; padding-bottom: 60px;">
+    <h1>无障碍设计 · 关爱用户</h1>
+    <p class="muted">从细节入手，确保网站对所有用户都可访问和友好。</p>
+    <img src="https://picsum.photos/1000/600?random=3" alt="详情页图片" style="border-radius: var(--radius-lg); margin-top: 30px;" />
+    <div style="margin-top: 40px; line-height: 1.8;">
+      <p>无障碍设计（Accessibility）旨在让网站能够被所有用户群体使用，包括残障人士。这不仅仅是法律要求，更是对用户的一种尊重。我们的模板遵循 WCAG 2.1 准则，通过以下方式提升可访问性：</p>
+      <ul>
+        <li>**语义化 HTML**：使用正确的标签（如 `<nav>`、`<main>`、`<footer>`）来构建页面结构，帮助屏幕阅读器理解内容。</li>
+        <li>**键盘可达性**：所有交互元素（如按钮、链接）都可通过键盘 Tab 键访问，并提供清晰的 `:focus-visible` 样式。</li>
+        <li>**高对比度**：在明亮和暗色模式下，都确保文本和背景之间有足够的对比度，方便视力受损用户阅读。</li>
+        <li>**ARIA 属性**：为复杂组件添加 ARIA 属性，提供更多上下文信息。</li>
+      </ul>
+      <p>我们坚信，一个优秀的网站应该惠及每一个人，而无障碍设计是实现这一目标的核心。</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container foot">
+      <div style="display:flex; align-items:center; gap:12px">
+        <div class="logo-badge" aria-hidden="true">LG</div>
+        <small>© <span id="y"></span> GreenCorp. All rights reserved.</small>
+      </div>
+      <div class="muted" style="display:flex; gap:12px; flex-wrap:wrap">
+        <a href="#" class="navlink">隐私</a>
+        <a href="#" class="navlink">条款</a>
+        <a href="#" class="navlink">帮助</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+    const html = document.documentElement;
+    const btn = document.getElementById('themeBtn');
+    const saved = localStorage.getItem('theme') || 'auto';
+    applyTheme(saved);
+    btn.addEventListener('click', () => {
+      const current = localStorage.getItem('theme') || 'auto';
+      const next = current === 'auto' ? 'dark' : current === 'dark' ? 'light' : 'auto';
+      applyTheme(next, true);
+    });
+    function applyTheme(mode, showToast){
+      if(mode === 'dark'){ html.setAttribute('data-theme','dark'); }
+      else if(mode === 'light'){ html.setAttribute('data-theme','light'); }
+      else { html.removeAttribute('data-theme'); mode = 'auto'; }
+      localStorage.setItem('theme', mode);
+      btn.setAttribute('aria-pressed', mode !== 'auto');
+      btn.textContent = mode === 'dark' ? '🌙 暗色' : mode === 'light' ? '🌞 明亮' : '🌗 主题';
+      if(showToast){
+        const toast = document.createElement('div');
+        toast.textContent = `主题：${btn.textContent.replace('主题','')}`;
+        Object.assign(toast.style, {
+          position:'fixed', inset:'auto 16px 16px auto', padding:'8px 12px',
+          background:'var(--glass)', color:'var(--fg)', border:'1px solid var(--glass-stroke)',
+          borderRadius:'12px', backdropFilter:'var(--blur)', WebkitBackdropFilter:'var(--blur)',
+          boxShadow:'var(--shadow)', zIndex:9999
+        });
+        document.body.appendChild(toast);
+        setTimeout(()=> toast.remove(), 1300);
+      }
+    }
+  </script>
+</body>
+</html>
