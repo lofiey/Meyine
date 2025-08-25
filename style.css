@@ -1,0 +1,173 @@
+/* 基础变量 */
+:root {
+  --bg: #ffffff;
+  --fg: #111111;
+  --stroke: #e0e0e0;
+  --primary: #1b5e20;
+  --primary-light: #d8f9e4;
+}
+
+body {
+  margin:0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  line-height:1.6;
+}
+
+/* 暗色模式 */
+@media(prefers-color-scheme:dark){
+  :root {
+    --bg:#121212;
+    --fg:#f5f5f5;
+    --stroke:#333;
+  }
+  body { background:var(--bg); color:var(--fg); }
+}
+
+/* 容器 */
+.container {
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 20px;
+}
+
+/* 通用按钮 */
+.btn {
+  background: var(--primary);
+  color:white;
+  padding:10px 20px;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:500;
+  transition:.2s;
+}
+.btn:hover { opacity:.9; }
+.btn.ghost {
+  background:transparent;
+  border:1px solid var(--primary);
+  color:var(--primary);
+}
+.btn.ghost:hover { background:var(--primary); color:white; }
+
+/* Header */
+.header {
+  background:var(--bg);
+  border-bottom:1px solid var(--stroke);
+  position:sticky; top:0; z-index:10;
+}
+.header nav a {
+  color:var(--fg);
+  text-decoration:none;
+  font-weight:500;
+}
+.header nav a:hover { color:var(--primary); }
+
+/* Hero */
+.hero {
+  padding:60px 20px;
+}
+.hero h1 { font-size:2.6rem; margin-bottom:16px; }
+
+/* hero-art: 跑马灯 */
+.hero-art {
+  position:relative;
+  height:250px;
+  overflow:hidden;
+  background:rgba(255,255,255,0.3);
+  border-radius:20px;
+  backdrop-filter:blur(12px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.marquee {
+  display:flex;
+  flex-direction:column;
+  animation:scrollUp 8s linear infinite;
+  text-align:center;
+}
+.marquee a {
+  font-size:1.4rem;
+  color:#1b5e20;
+  text-decoration:none;
+  margin:12px 0;
+  font-weight:bold;
+}
+.marquee span {
+  font-size:1.2rem;
+  color:#333;
+  margin:12px 0;
+}
+.hero-art .marquee:hover { animation-play-state:paused; }
+@keyframes scrollUp {
+  0% { transform:translateY(100%); }
+  100% { transform:translateY(-100%); }
+}
+
+/* About */
+#about {
+  padding:60px 20px;
+  background:linear-gradient(135deg,#f3fff8,#d8f9e4);
+}
+#about .card {
+  background:white;
+  padding:30px;
+  border-radius:16px;
+  box-shadow:0 6px 24px rgba(0,0,0,.08);
+  text-align:center;
+}
+
+/* Features */
+#features {
+  background:linear-gradient(135deg,#d8f9e4,#f3fff8);
+  padding:60px 20px;
+}
+.card {
+  background:white;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 4px 20px rgba(0,0,0,.08);
+  transition:.3s;
+}
+.card:hover { transform:translateY(-6px); }
+
+/* Contact */
+#contact {
+  background:linear-gradient(135deg,#d8f9e4,#f3fff8);
+  padding:60px 20px;
+}
+#contact form input,
+#contact form textarea {
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid var(--stroke);
+  background:var(--bg);
+  color:var(--fg);
+  font-size:1rem;
+}
+
+/* Footer */
+.footer {
+  padding:20px;
+  text-align:center;
+  font-size:.9rem;
+  background:var(--bg);
+  border-top:1px solid var(--stroke);
+}
+
+/* Grid */
+.grid {
+  display:grid;
+  gap:20px;
+}
+@media(min-width:768px){
+  .grid-3 { grid-template-columns: repeat(3,1fr); }
+}
+
+/* 响应式 Contact 左右分屏 */
+@media(max-width:768px){
+  #contact .container {
+    grid-template-columns:1fr;
+  }
+}
