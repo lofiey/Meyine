@@ -385,25 +385,34 @@
   <!-- 关于 + 联系 -->
   <section id="about" class="container" style="padding: 12px 0 36px">
     <h2 style="font-size:var(--fs-h2); margin:0 0 8px">关于我们</h2>
-    <p class="muted" style="margin:0 0 18px">我们专注于轻量、利落的前端实现与品牌调性统一，强调“看得见的速度与秩序”。</p>
+    <p class="muted" style="margin:0 0 18px">我们专注于轻量、利落的前端实现与品牌调性统一。</p>
     <div id="contact" class="card" style="display:grid; gap:12px">
       <h3 style="margin:0">联系</h3>
-      <form onsubmit="event.preventDefault(); alert('已收到表单（示例）');" style="display:grid; gap:10px">
+      <!-- ✅ Netlify 表单 -->
+      <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thanks.html" style="display:grid; gap:10px">
+        <input type="hidden" name="form-name" value="contact">
+        <p style="display:none">
+          <label>不要填写这个字段: <input name="bot-field"></label>
+        </p>
+
         <div style="display:grid; gap:6px">
           <label for="name">姓名</label>
-          <input id="name" required placeholder="请输入姓名"
+          <input id="name" name="name" required placeholder="请输入姓名"
                  style="padding:10px 12px; border-radius:10px; border:1px solid var(--stroke); background:var(--bg); color:var(--fg)">
         </div>
+
         <div style="display:grid; gap:6px">
           <label for="email">邮箱</label>
-          <input id="email" type="email" required placeholder="your@mail.com"
+          <input id="email" type="email" name="email" required placeholder="your@mail.com"
                  style="padding:10px 12px; border-radius:10px; border:1px solid var(--stroke); background:var(--bg); color:var(--fg)">
         </div>
+
         <div style="display:grid; gap:6px">
           <label for="msg">需求描述</label>
-          <textarea id="msg" rows="4" placeholder="简单描述你的项目……"
+          <textarea id="msg" name="message" rows="4" placeholder="简单描述你的项目……"
                     style="padding:10px 12px; border-radius:10px; border:1px solid var(--stroke); background:var(--bg); color:var(--fg)"></textarea>
         </div>
+
         <div style="display:flex; gap:10px; flex-wrap:wrap">
           <button class="btn" type="submit">提交</button>
           <button class="btn ghost" type="reset">重置</button>
