@@ -1,484 +1,107 @@
-<!doctype html>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="zh">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>浅绿色企业站 - 响应式 & 暗色模式</title>
-  <meta name="description" content="浅绿色个性企业风格模板，CSS3 构建，自适应，暗色模式。">
-  <style>
-    /* =========================
-       设计系统：CSS 变量
-       ========================= */
-    :root{
-      --brand: #34c759;            /* 浅绿主色 */
-      --brand-2: #22a84b;          /* 深一档 */
-      --brand-3: #e9f9ef;          /* 很浅的绿背景 */
-      --fg: #0b0f10;               /* 前景色（文本） */
-      --muted: #5b666a;            /* 次级文本 */
-      --bg: #ffffff;               /* 背景 */
-      --card: #ffffff;             /* 卡片背景 */
-      --stroke: #e9ecef;           /* 细分割线 */
-      --shadow: 0 6px 24px rgba(0,0,0,.08);
-      --radius: 14px;
-      --radius-sm: 10px;
-      --radius-lg: 22px;
-      --container: 1200px;
-
-      /* 字号随视口自适应：clamp(最小, 视口比例, 最大) */
-      --fs-hero: clamp(28px, 5vw, 48px);
-      --fs-h2: clamp(20px, 2.8vw, 28px);
-      --fs-body: clamp(14px, 1.4vw, 16px);
-
-      --trans: 220ms cubic-bezier(.22,.61,.36,1);
-      --glass: rgba(255,255,255,.55);
-      --glass-stroke: rgba(255,255,255,.5);
-      --blur: blur(12px);
-    }
-
-    /* 暗色模式（跟随系统） */
-    @media (prefers-color-scheme: dark){
-      :root{
-        --fg: #e6eef0;
-        --muted: #a8b3b8;
-        --bg: #0b0f10;
-        --card: #11161a;
-        --stroke: #182026;
-        --shadow: 0 6px 28px rgba(0,0,0,.35);
-        --glass: rgba(17,22,26,.55);
-        --glass-stroke: rgba(255,255,255,.08);
-      }
-    }
-
-    /* 手动强制主题（按钮切换时加在 <html> 上） */
-    html[data-theme="light"]{
-      --fg:#0b0f10; --muted:#5b666a; --bg:#ffffff; --card:#ffffff; --stroke:#e9ecef;
-      --shadow:0 6px 24px rgba(0,0,0,.08); --glass:rgba(255,255,255,.55); --glass-stroke:rgba(0,0,0,.06);
-    }
-    html[data-theme="dark"]{
-      --fg:#e6eef0; --muted:#a8b3b8; --bg:#0b0f10; --card:#11161a; --stroke:#182026;
-      --shadow:0 6px 28px rgba(0,0,0,.35); --glass:rgba(17,22,26,.55); --glass-stroke:rgba(255,255,255,.08);
-    }
-
-    /* 基础样式重置与排版 */
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, "PingFang SC",
-      "Hiragino Sans GB","Microsoft YaHei", "Noto Sans CJK SC", Arial, sans-serif;
-      color:var(--fg); background:var(--bg); line-height:1.6; font-size:var(--fs-body);
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-    }
-    a{color:inherit; text-decoration:none}
-    img{max-width:100%; display:block}
-
-    .container{width:min(100% - 32px, var(--container)); margin-inline:auto}
-
-    /* 顶部导航 */
-    .nav{
-      position:sticky; top:0; z-index:1000;
-      background:color-mix(in oklab, var(--bg) 78%, var(--brand-3) 22%);
-      backdrop-filter: var(--blur);
-      -webkit-backdrop-filter: var(--blur);
-      border-bottom:1px solid var(--stroke);
-    }
-    .nav-inner{
-      display:flex; align-items:center; gap:16px; padding:12px 0;
-    }
-    .logo{
-      display:flex; align-items:center; gap:10px; font-weight:700;
-      letter-spacing:.3px;
-    }
-    .logo-badge{
-      width:32px; height:32px; border-radius:10px;
-      background: linear-gradient(135deg, var(--brand), var(--brand-2));
-      display:grid; place-items:center; color:white; font-size:14px;
-      box-shadow: var(--shadow);
-    }
-    .nav-spacer{flex:1}
-    .nav-links{display:flex; gap:18px; align-items:center; flex-wrap:wrap}
-    .nav a.navlink{
-      padding:8px 12px; border-radius:10px; transition: background var(--trans), color var(--trans);
-    }
-    .nav a.navlink:hover{ background: color-mix(in oklab, var(--brand-3) 60%, var(--bg)); }
-
-    .theme-toggle{
-      border:1px solid var(--stroke); background:var(--card); color:var(--fg);
-      padding:8px 12px; border-radius:12px; cursor:pointer;
-      transition: transform var(--trans), background var(--trans), border-color var(--trans);
-    }
-    .theme-toggle:hover{ transform: translateY(-1px); }
-
-    /* 英雄区 */
-    .hero{
-      position:relative; overflow:hidden;
-      background:
-        radial-gradient(1200px 600px at 10% -10%, color-mix(in oklab, var(--brand) 24%, transparent) 0%, transparent 60%),
-        radial-gradient(900px 480px at 90% 0%, color-mix(in oklab, var(--brand) 14%, transparent) 0%, transparent 70%),
-        linear-gradient(180deg, color-mix(in oklab, var(--brand-3) 55%, var(--bg) 45%), var(--bg));
-    }
-    .hero-inner{
-      display:grid; align-items:center; grid-template-columns: 1.1fr .9fr;
-      gap: clamp(16px, 4vw, 48px); padding: clamp(28px, 6vw, 88px) 0;
-    }
-    .hero h1{font-size:var(--fs-hero); line-height:1.2; margin:0 0 10px}
-    .hero p{margin:0 0 24px; color:var(--muted)}
-    .btn{
-      --_bg: var(--brand); --_fg: white;
-      display:inline-flex; align-items:center; gap:10px; border:0; cursor:pointer;
-      padding:12px 18px; border-radius:14px; background:var(--_bg); color:var(--_fg);
-      box-shadow: var(--shadow); transition: transform var(--trans), box-shadow var(--trans), opacity var(--trans), background var(--trans);
-    }
-    .btn:hover{ transform: translateY(-1px); }
-    .btn.ghost{
-      --_bg: transparent; --_fg: var(--brand);
-      outline:1px solid color-mix(in oklab, var(--brand) 45%, var(--stroke));
-      box-shadow:none;
-    }
-    .hero-art{
-      aspect-ratio: 4/3;
-      border-radius: var(--radius-lg);
-      background:
-        linear-gradient(135deg, color-mix(in oklab, var(--brand) 16%, transparent), transparent 60%),
-        linear-gradient(180deg, color-mix(in oklab, var(--bg) 65%, var(--brand-3) 35%), var(--card));
-      border:1px solid var(--stroke);
-      position:relative;
-      box-shadow: var(--shadow);
-    }
-    .chip{
-      position:absolute; inset:auto auto 16% 10%;
-      display:flex; align-items:center; gap:10px; padding:10px 14px;
-      border-radius: 999px; background: var(--glass); color: var(--fg);
-      border:1px solid var(--glass-stroke); backdrop-filter: var(--blur);
-    }
-    .dot{width:10px; height:10px; border-radius:99px; background: linear-gradient(135deg, var(--brand), var(--brand-2)); box-shadow:var(--shadow)}
-
-    /* 特性区 */
-    .features{
-      padding: clamp(36px, 5vw, 72px) 0;
-    }
-    .grid-3{
-      display:grid; gap:18px;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-    }
-    @media (max-width: 960px){
-      .hero-inner{ grid-template-columns: 1fr; }
-      .grid-3{ grid-template-columns: 1fr 1fr; }
-    }
-    @media (max-width: 640px){
-      .grid-3{ grid-template-columns: 1fr; }
-    }
-    .card{
-      background: var(--card); border:1px solid var(--stroke); border-radius: var(--radius);
-      padding: clamp(16px, 3.5vw, 22px); box-shadow: var(--shadow);
-      transition: transform var(--trans), border-color var(--trans), box-shadow var(--trans);
-    }
-    .card:hover{ transform: translateY(-2px); border-color: color-mix(in oklab, var(--brand) 35%, var(--stroke)); }
-    .icon{
-      width:40px; height:40px; border-radius:10px; display:grid; place-items:center; margin-bottom:10px;
-      background: linear-gradient(135deg, var(--brand), var(--brand-2)); color:white; font-weight:700;
-      box-shadow: var(--shadow);
-    }
-    .card h3{font-size:18px; margin:6px 0 6px}
-    .card p{margin:0; color:var(--muted)}
-
-    /* 服务区（条目列表 + 进度条） */
-    .services{
-      padding: clamp(36px, 5vw, 72px) 0;
-      display:grid; gap:24px; grid-template-columns: 1.2fr .8fr;
-    }
-    @media (max-width: 960px){ .services{ grid-template-columns: 1fr; } }
-    .list{
-      display:grid; gap:14px;
-    }
-    .list-item{
-      display:flex; gap:14px; align-items:flex-start;
-      padding:14px; border:1px dashed color-mix(in oklab, var(--brand) 35%, var(--stroke));
-      background: color-mix(in oklab, var(--brand-3) 35%, var(--bg)); border-radius: var(--radius-sm);
-    }
-    .badge{
-      font-size:12px; padding:4px 10px; border-radius:999px; background: var(--brand); color:white; white-space:nowrap
-    }
-    .meter{
-      height:10px; border-radius:999px; background: color-mix(in oklab, var(--bg) 70%, var(--stroke) 30%);
-      overflow:hidden; border:1px solid var(--stroke);
-    }
-    .meter>i{
-      display:block; height:100%; width: var(--val, 60%); background: linear-gradient(90deg, var(--brand), var(--brand-2));
-      border-radius:999px; transform-origin:left; animation: grow 1.2s var(--trans) both;
-    }
-    @keyframes grow{ from{ transform: scaleX(.2) } to{ transform: scaleX(1) } }
-
-    /* CTA 条 */
-    .cta{
-      margin: clamp(36px, 6vw, 88px) 0;
-      background:
-        linear-gradient(135deg, color-mix(in oklab, var(--brand) 42%, transparent), transparent 60%),
-        color-mix(in oklab, var(--brand-3) 60%, var(--bg) 40%);
-      border:1px solid var(--stroke);
-      border-radius: var(--radius-lg);
-      padding: clamp(22px, 4.2vw, 38px);
-      display:grid; gap:12px; align-items:center; grid-template-columns: 1fr auto;
-      box-shadow: var(--shadow);
-    }
-    @media (max-width: 640px){ .cta{ grid-template-columns: 1fr; gap:16px; } }
-    .cta p{margin:0; color:var(--muted)}
-
-    /* 页脚 */
-    footer{
-      padding: 36px 0 48px; border-top:1px solid var(--stroke);
-      background: color-mix(in oklab, var(--bg) 85%, var(--brand-3) 15%);
-    }
-    .foot{
-      display:flex; gap:18px; align-items:center; flex-wrap:wrap; justify-content:space-between;
-    }
-    .foot small{ color:var(--muted) }
-
-    /* 小装饰：底部波浪 SVG */
-    .wave{
-      display:block; width:100%; height:auto; mix-blend-mode:soft-light; opacity:.65
-    }
-
-    /* 可访问性增强：键盘焦点样式 */
-    :focus-visible{ outline: 2px solid color-mix(in oklab, var(--brand) 60%, #66a); outline-offset: 2px; border-radius: 8px; }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>绿色科技首页</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- 顶部导航 -->
-  <nav class="nav">
-    <div class="container nav-inner">
-      <div class="logo" aria-label="网站 Logo">
-        <div class="logo-badge">LG</div>
-        <div>GreenCorp</div>
-      </div>
-      <div class="nav-spacer"></div>
-      <div class="nav-links" role="navigation" aria-label="主导航">
-        <a href="#features" class="navlink">产品优势</a>
-        <a href="#services" class="navlink">解决方案</a>
-        <a href="#about" class="navlink">关于我们</a>
-        <a href="#contact" class="navlink">联系</a>
-        <button id="themeBtn" class="theme-toggle" aria-pressed="false" aria-label="切换明/暗主题">🌗 主题</button>
-      </div>
+  <!-- Header -->
+  <header class="header">
+    <div class="container" style="display:flex; justify-content:space-between; align-items:center; padding:16px 0">
+      <a href="index.html" style="font-weight:bold; font-size:1.4rem; color:var(--fg); text-decoration:none">品牌LOGO</a>
+      <nav style="display:flex; gap:20px">
+        <a href="#about">关于我们</a>
+        <a href="#features">产品优势</a>
+        <a href="#contact">联系</a>
+      </nav>
     </div>
-  </nav>
-
-  <!-- 英雄区 -->
-  <header class="hero">
-    <div class="container hero-inner">
-      <div>
-        <h1>以浅绿色为基调的现代企业模板</h1>
-        <p>纯 CSS3 自适应布局，开箱即用。支持跟随系统或手动切换的暗色模式，细腻留白与卡片化设计，适合企业官网/产品着陆页。</p>
-        <div style="display:flex; gap:10px; flex-wrap:wrap">
-          <a class="btn" href="#contact">立即咨询 →</a>
-          <a class="btn ghost" href="#features">了解优势</a>
-        </div>
-      </div>
-
-      <div class="hero-art" aria-hidden="true">
-        <div class="chip"><span class="dot" aria-hidden="true"></span> 实时质感 · 玻璃霜化</div>
-      </div>
-    </div>
-    <svg class="wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M0,80 C240,140 480,20 720,70 C960,120 1200,60 1440,100 L1440,120 L0,120 Z"
-            fill="url(#g)"></path>
-      <defs>
-        <linearGradient id="g" x1="0" x2="1" y1="0" y2="0">
-          <stop offset="0" stop-color="#34c759"/>
-          <stop offset="1" stop-color="#22a84b"/>
-        </linearGradient>
-      </defs>
-    </svg>
   </header>
 
-  <!-- 特性 -->
-  <section id="features" class="features">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container" style="display:grid; gap:40px; grid-template-columns:1fr 1fr; align-items:center">
+      <div>
+        <h1>智能未来 · 绿色科技</h1>
+        <p style="margin-bottom:20px; color:#444">我们用创新的数字化方案，助力企业迈向高效与可持续发展。</p>
+        <a href="#features" class="btn">了解更多</a>
+      </div>
+      <!-- hero-art 跑马灯 -->
+      <div class="hero-art">
+        <div class="marquee">
+          <a href="details.html">实时质感 · 玻璃霜化</a>
+          <span>绿色节能 · 可持续</span>
+          <span>智能设计 · 极简美学</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 关于我们 -->
+  <section id="about">
     <div class="container">
-      <h2 style="font-size:var(--fs-h2); margin:0 0 16px">产品优势</h2>
-      <div class="grid-3">
-        <article class="card">
-          <div class="icon">A</div>
-          <h3>轻量纯前端</h3>
-          <p>无需框架或构建工具，HTML + CSS3 + 少量 JS 即可部署。</p>
-        </article>
-        <article class="card">
-          <div class="icon">R</div>
-          <h3>响应式适配</h3>
-          <p>从手机到 4K 显示器，使用 clamp 与 Grid/Flex 自然缩放。</p>
-        </article>
-        <article class="card">
-          <div class="icon">D</div>
-          <h3>暗色模式</h3>
-          <p>默认跟随系统，也可一键切换并本地记忆你的喜好。</p>
-        </article>
-        <article class="card">
-          <div class="icon">S</div>
-          <h3>卡片与阴影</h3>
-          <p>柔和投影与圆角，提升层次与可读性。</p>
-        </article>
-        <article class="card">
-          <div class="icon">T</div>
-          <h3>动效友好</h3>
-          <p>过渡、渐变、进度条动画，细节流畅不夸张。</p>
-        </article>
-        <article class="card">
-          <div class="icon">G</div>
-          <h3>配色可拓展</h3>
-          <p>统一变量管理品牌色，快速切换主题风格。</p>
-        </article>
+      <div class="card">
+        <h2>关于我们</h2>
+        <p>我们是一支专注于科技创新的团队，秉持绿色环保与数字智能的理念，打造可持续的未来。</p>
       </div>
     </div>
   </section>
 
-  <!-- 解决方案 + 能力进度 -->
-  <section id="services" class="services container">
-    <div>
-      <h2 style="font-size:var(--fs-h2); margin:0 0 12px">解决方案</h2>
-      <div class="list">
-        <div class="list-item">
-          <span class="badge">官网建设</span>
-          <div>企业官网、品牌着陆页、活动页快速搭建与上线。</div>
-        </div>
-        <div class="list-item">
-          <span class="badge">电商展示</span>
-          <div>产品卡片、规格表、转化按钮一体化设计。</div>
-        </div>
-        <div class="list-item">
-          <span class="badge">可访问性</span>
-          <div>语义标签、键盘可达、对比度优化，照顾更多用户。</div>
-        </div>
+  <!-- 产品优势 -->
+  <section id="features">
+    <div class="container grid grid-3">
+      <div class="card">
+        <h3>创新设计</h3>
+        <p>简洁而现代的设计，提升用户体验与审美。</p>
+      </div>
+      <div class="card">
+        <h3>绿色环保</h3>
+        <p>采用环保方案，助力可持续发展。</p>
+      </div>
+      <div class="card">
+        <h3>高效性能</h3>
+        <p>优化系统结构，保证运行的流畅与稳定。</p>
       </div>
     </div>
+  </section>
 
-    <div>
-      <h2 style="font-size:var(--fs-h2); margin:0 0 12px">专业能力</h2>
-      <div style="display:grid; gap:14px">
-        <div>
-          <div style="display:flex; justify-content:space-between; margin-bottom:6px">
-            <strong>前端工程</strong><span class="muted">90%</span>
+  <!-- 联系表单 -->
+  <section id="contact">
+    <div class="container" style="display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; max-width:1000px">
+      <div style="text-align:center">
+        <img src="https://picsum.photos/500/380?random=20" alt="联系我们"
+             style="max-width:100%; border-radius:16px; box-shadow:0 6px 24px rgba(0,0,0,.12)">
+      </div>
+      <div class="card" style="display:grid; gap:20px">
+        <h3 style="text-align:center">联系</h3>
+        <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thanks.html" style="display:grid; gap:14px">
+          <input type="hidden" name="form-name" value="contact">
+          <p style="display:none"><label>不要填写这个字段: <input name="bot-field"></label></p>
+          <div>
+            <label for="name">姓名</label>
+            <input id="name" name="name" required placeholder="请输入姓名">
           </div>
-          <div class="meter"><i style="--val:90%"></i></div>
-        </div>
-        <div>
-          <div style="display:flex; justify-content:space-between; margin-bottom:6px">
-            <strong>视觉设计</strong><span class="muted">80%</span>
+          <div>
+            <label for="email">邮箱</label>
+            <input id="email" type="email" name="email" required placeholder="your@mail.com">
           </div>
-          <div class="meter"><i style="--val:80%"></i></div>
-        </div>
-        <div>
-          <div style="display:flex; justify-content:space-between; margin-bottom:6px">
-            <strong>性能优化</strong><span class="muted">85%</span>
+          <div>
+            <label for="msg">需求描述</label>
+            <textarea id="msg" name="message" rows="4" placeholder="简单描述你的项目……"></textarea>
           </div>
-          <div class="meter"><i style="--val:85%"></i></div>
-        </div>
+          <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap">
+            <button class="btn" type="submit">提交</button>
+            <button class="btn ghost" type="reset">重置</button>
+          </div>
+        </form>
       </div>
     </div>
   </section>
 
-  <!-- CTA -->
-  <section class="container cta">
-    <div>
-      <h3 style="margin:0 0 8px">准备好用浅绿色为你的品牌增色了吗？</h3>
-      <p>我们为你定制企业官网与品牌着陆页，兼顾颜值与加载速度。</p>
-    </div>
-    <a class="btn" href="#contact" aria-label="立即开始">开始合作 →</a>
-  </section>
-
-  <!-- 关于 + 联系 -->
-  <section id="about" class="container" style="padding: 12px 0 36px">
-    <h2 style="font-size:var(--fs-h2); margin:0 0 8px">关于我们</h2>
-    <p class="muted" style="margin:0 0 18px">我们专注于轻量、利落的前端实现与品牌调性统一。</p>
-    <div id="contact" class="card" style="display:grid; gap:12px">
-      <h3 style="margin:0">联系</h3>
-      <!-- ✅ Netlify 表单 -->
-      <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thanks.html" style="display:grid; gap:10px">
-        <input type="hidden" name="form-name" value="contact">
-        <p style="display:none">
-          <label>不要填写这个字段: <input name="bot-field"></label>
-        </p>
-
-        <div style="display:grid; gap:6px">
-          <label for="name">姓名</label>
-          <input id="name" name="name" required placeholder="请输入姓名"
-                 style="padding:10px 12px; border-radius:10px; border:1px solid var(--stroke); background:var(--bg); color:var(--fg)">
-        </div>
-
-        <div style="display:grid; gap:6px">
-          <label for="email">邮箱</label>
-          <input id="email" type="email" name="email" required placeholder="your@mail.com"
-                 style="padding:10px 12px; border-radius:10px; border:1px solid var(--stroke); background:var(--bg); color:var(--fg)">
-        </div>
-
-        <div style="display:grid; gap:6px">
-          <label for="msg">需求描述</label>
-          <textarea id="msg" name="message" rows="4" placeholder="简单描述你的项目……"
-                    style="padding:10px 12px; border-radius:10px; border:1px solid var(--stroke); background:var(--bg); color:var(--fg)"></textarea>
-        </div>
-
-        <div style="display:flex; gap:10px; flex-wrap:wrap">
-          <button class="btn" type="submit">提交</button>
-          <button class="btn ghost" type="reset">重置</button>
-        </div>
-      </form>
-    </div>
-  </section>
-
-  <footer>
-    <div class="container foot">
-      <div style="display:flex; align-items:center; gap:12px">
-        <div class="logo-badge" aria-hidden="true">LG</div>
-        <small>© <span id="y"></span> GreenCorp. All rights reserved.</small>
-      </div>
-      <div class="muted" style="display:flex; gap:12px; flex-wrap:wrap">
-        <a href="#" class="navlink">隐私</a>
-        <a href="#" class="navlink">条款</a>
-        <a href="#" class="navlink">帮助</a>
-      </div>
-    </div>
+  <!-- Footer -->
+  <footer class="footer">
+    © 2025 品牌LOGO. 保留所有权利.
   </footer>
-
-  <script>
-    // 年份
-    document.getElementById('y').textContent = new Date().getFullYear();
-
-    // 主题切换：持久化在 localStorage("theme")，可选值: "light" | "dark" | "auto"
-    const html = document.documentElement;
-    const btn = document.getElementById('themeBtn');
-
-    // 从本地读取
-    const saved = localStorage.getItem('theme') || 'auto';
-    applyTheme(saved);
-
-    btn.addEventListener('click', () => {
-      // 轮换：auto -> dark -> light -> auto
-      const current = localStorage.getItem('theme') || 'auto';
-      const next = current === 'auto' ? 'dark' : current === 'dark' ? 'light' : 'auto';
-      applyTheme(next, true);
-    });
-
-    function applyTheme(mode, showToast){
-      if(mode === 'dark'){ html.setAttribute('data-theme','dark'); }
-      else if(mode === 'light'){ html.setAttribute('data-theme','light'); }
-      else { html.removeAttribute('data-theme'); mode = 'auto'; } // 跟随系统
-
-      localStorage.setItem('theme', mode);
-      btn.setAttribute('aria-pressed', mode !== 'auto');
-      btn.textContent = mode === 'dark' ? '🌙 暗色'
-                        : mode === 'light' ? '🌞 明亮'
-                        : '🌗 主题';
-
-      if(showToast){
-        // 轻提示
-        const toast = document.createElement('div');
-        toast.textContent = `主题：${btn.textContent.replace('主题','')}`;
-        Object.assign(toast.style, {
-          position:'fixed', inset:'auto 16px 16px auto', padding:'8px 12px',
-          background:'var(--glass)', color:'var(--fg)', border:'1px solid var(--glass-stroke)',
-          borderRadius:'12px', backdropFilter:'var(--blur)', WebkitBackdropFilter:'var(--blur)',
-          boxShadow:'var(--shadow)', zIndex:9999
-        });
-        document.body.appendChild(toast);
-        setTimeout(()=> toast.remove(), 1300);
-      }
-    }
-  </script>
 </body>
 </html>
