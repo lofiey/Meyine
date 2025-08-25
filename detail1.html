@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>详情页 - 实时质感</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="logo">
+        <div class="logo-badge">M</div>
+        <div>Meyine</div>
+      </div>
+      <div class="nav-spacer"></div>
+      <div class="nav-links">
+        <a href="index.html" class="navlink">返回主页</a>
+        <button id="themeBtn" class="theme-toggle" aria-pressed="false">🌗 主题</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container" style="padding-top: 60px; padding-bottom: 60px;">
+    <h1>实时质感 · 玻璃霜化</h1>
+    <p class="muted">利用 CSS 玻璃拟态与滤镜，打造出细腻的界面效果。</p>
+    <img src="https://picsum.photos/1000/600?random=1" alt="详情页图片" style="border-radius: var(--radius-lg); margin-top: 30px;" />
+    <div style="margin-top: 40px; line-height: 1.8;">
+      <p>玻璃拟态（Glassmorphism）是一种流行的设计趋势，它通过模拟毛玻璃的透明度和模糊效果，为界面元素赋予深度和层次感。在网页设计中，这通常通过 CSS 的 `backdrop-filter` 属性实现，它允许你对元素后方的区域应用滤镜效果，而不仅仅是元素本身。</p>
+      <p>这种效果不仅美观，还能创造出轻盈、现代的视觉体验。通过调整模糊值、背景颜色透明度以及边框样式，可以实现不同程度的透明度和光泽感，使界面在视觉上更加丰富和有趣。在暗色模式下，玻璃拟态的细节会更加突出，与深色背景形成优雅的对比。</p>
+    </div>
+  </div>
+  
+  <footer>
+    <div class="container foot">
+      <div style="display:flex; align-items:center; gap:12px">
+        <div class="logo-badge" aria-hidden="true">LG</div>
+        <small>© <span id="y"></span> GreenCorp. All rights reserved.</small>
+      </div>
+      <div class="muted" style="display:flex; gap:12px; flex-wrap:wrap">
+        <a href="#" class="navlink">隐私</a>
+        <a href="#" class="navlink">条款</a>
+        <a href="#" class="navlink">帮助</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+    const html = document.documentElement;
+    const btn = document.getElementById('themeBtn');
+    const saved = localStorage.getItem('theme') || 'auto';
+    applyTheme(saved);
+    btn.addEventListener('click', () => {
+      const current = localStorage.getItem('theme') || 'auto';
+      const next = current === 'auto' ? 'dark' : current === 'dark' ? 'light' : 'auto';
+      applyTheme(next, true);
+    });
+    function applyTheme(mode, showToast){
+      if(mode === 'dark'){ html.setAttribute('data-theme','dark'); }
+      else if(mode === 'light'){ html.setAttribute('data-theme','light'); }
+      else { html.removeAttribute('data-theme'); mode = 'auto'; }
+      localStorage.setItem('theme', mode);
+      btn.setAttribute('aria-pressed', mode !== 'auto');
+      btn.textContent = mode === 'dark' ? '🌙 暗色' : mode === 'light' ? '🌞 明亮' : '🌗 主题';
+      if(showToast){
+        const toast = document.createElement('div');
+        toast.textContent = `主题：${btn.textContent.replace('主题','')}`;
+        Object.assign(toast.style, {
+          position:'fixed', inset:'auto 16px 16px auto', padding:'8px 12px',
+          background:'var(--glass)', color:'var(--fg)', border:'1px solid var(--glass-stroke)',
+          borderRadius:'12px', backdropFilter:'var(--blur)', WebkitBackdropFilter:'var(--blur)',
+          boxShadow:'var(--shadow)', zIndex:9999
+        });
+        document.body.appendChild(toast);
+        setTimeout(()=> toast.remove(), 1300);
+      }
+    }
+  </script>
+</body>
+</html>
