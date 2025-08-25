@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>详情页 - 智能集成</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="logo">
+        <div class="logo-badge">M</div>
+        <div>Meyine</div>
+      </div>
+      <div class="nav-spacer"></div>
+      <div class="nav-links">
+        <a href="index.html" class="navlink">返回主页</a>
+        <button id="themeBtn" class="theme-toggle" aria-pressed="false">🌗 主题</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container" style="padding-top: 60px; padding-bottom: 60px;">
+    <h1>智能集成 · 动态交互</h1>
+    <p class="muted">利用少量 JavaScript 实现主题切换、表单验证等动态功能。</p>
+    <img src="https://picsum.photos/1000/600?random=4" alt="详情页图片" style="border-radius: var(--radius-lg); margin-top: 30px;" />
+    <div style="margin-top: 40px; line-height: 1.8;">
+      <p>我们的模板在保持轻量的同时，也集成了必要的动态交互功能，以提升用户体验。这包括了易于使用的**主题切换**功能，允许用户根据偏好或环境光线一键切换到明亮或暗色模式。这个功能通过 `localStorage` 实现了用户偏好的本地记忆，确保下次访问时依然保持上次的设置。</p>
+      <p>此外，我们还提供了基本的**表单验证**和 **API 集成**示例。所有动态功能都基于原生 JavaScript 编写，无需额外的依赖库，保持了代码的轻量和纯粹，让你能够轻松在此基础上进行二次开发和功能扩展。</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container foot">
+      <div style="display:flex; align-items:center; gap:12px">
+        <div class="logo-badge" aria-hidden="true">LG</div>
+        <small>© <span id="y"></span> GreenCorp. All rights reserved.</small>
+      </div>
+      <div class="muted" style="display:flex; gap:12px; flex-wrap:wrap">
+        <a href="#" class="navlink">隐私</a>
+        <a href="#" class="navlink">条款</a>
+        <a href="#" class="navlink">帮助</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+    const html = document.documentElement;
+    const btn = document.getElementById('themeBtn');
+    const saved = localStorage.getItem('theme') || 'auto';
+    applyTheme(saved);
+    btn.addEventListener('click', () => {
+      const current = localStorage.getItem('theme') || 'auto';
+      const next = current === 'auto' ? 'dark' : current === 'dark' ? 'light' : 'auto';
+      applyTheme(next, true);
+    });
+    function applyTheme(mode, showToast){
+      if(mode === 'dark'){ html.setAttribute('data-theme','dark'); }
+      else if(mode === 'light'){ html.setAttribute('data-theme','light'); }
+      else { html.removeAttribute('data-theme'); mode = 'auto'; }
+      localStorage.setItem('theme', mode);
+      btn.setAttribute('aria-pressed', mode !== 'auto');
+      btn.textContent = mode === 'dark' ? '🌙 暗色' : mode === 'light' ? '🌞 明亮' : '🌗 主题';
+      if(showToast){
+        const toast = document.createElement('div');
+        toast.textContent = `主题：${btn.textContent.replace('主题','')}`;
+        Object.assign(toast.style, {
+          position:'fixed', inset:'auto 16px 16px auto', padding:'8px 12px',
+          background:'var(--glass)', color:'var(--fg)', border:'1px solid var(--glass-stroke)',
+          borderRadius:'12px', backdropFilter:'var(--blur)', WebkitBackdropFilter:'var(--blur)',
+          boxShadow:'var(--shadow)', zIndex:9999
+        });
+        document.body.appendChild(toast);
+        setTimeout(()=> toast.remove(), 1300);
+      }
+    }
+  </script>
+</body>
+</html>
