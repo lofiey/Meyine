@@ -88,20 +88,17 @@ img{max-width:100%; display:block}
   letter-spacing:.3px;
 }
 .logo-badge{
-  width:40px; /* 调整宽度 */
-  height:40px; /* 调整高度 */
+  width:40px;
+  height:40px;
   border-radius:10px;
-  background: linear-gradient(135deg, var(--brand), var(--brand-2)); /* 保留绿色背景 */
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
   display:grid;
   place-items:center;
-  color:white; /* 文本颜色，如果 Logo 是图片则不需要 */
-  font-size:14px; /* 字体大小，如果 Logo 是图片则不需要 */
+  color:white;
+  font-size:14px;
   box-shadow: var(--shadow);
-  /* * 新增样式：
-   * 将下面的 'your-logo-file.png' 替换成你实际的 Logo 文件名
-   */
-  background-image: url('my.png');
-  background-size: 70%; /* 调整图片大小以适应徽章 */
+  background-image: url('your-logo-file.png'); /* 确保这里是你的Logo文件路径 */
+  background-size: 140%; /* 将之前的 70% 放大一倍，变为 140% */
   background-repeat: no-repeat;
   background-position: center;
 }
