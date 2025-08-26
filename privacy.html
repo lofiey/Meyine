@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>隐私政策</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="logo">
+        <div class="logo-badge"> </div>
+        <div>Meyine</div>
+      </div>
+      <div class="nav-spacer"></div>
+      <div class="nav-links">
+        <a href="index.html" class="navlink">返回主页</a>
+        <button id="themeBtn" class="theme-toggle" aria-pressed="false">🌗 主题</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container detail-content">
+    <h1>隐私政策</h1>
+    <p class="muted">本文件解释了我们如何收集、使用和保护你的个人信息。</p>
+    <div class="content-text">
+      <h2>1. 信息收集</h2>
+      <p>我们可能会在您使用本网站时收集您的非个人身份信息，如浏览器类型、访问时间以及您访问的页面。我们收集这些信息以优化网站性能和提升用户体验。在您自愿提供的情况下，我们可能会收集您的姓名和电子邮件地址，例如在您填写联系表单时。</p>
+
+      <h2>2. 信息使用</h2>
+      <p>我们收集的信息主要用于以下目的：</p>
+      <ul>
+        <li>提供和维护我们的服务；</li>
+        <li>提升和个性化您的网站体验；</li>
+        <li>与您沟通，回应您的咨询和请求；</li>
+        <li>监控网站的使用情况，进行数据分析。</li>
+      </ul>
+      
+      <h2>3. 信息保护</h2>
+      <p>我们采取了多种安全措施来保护您的个人信息。尽管如此，请理解互联网上的数据传输并非百分之百安全，我们无法保证您传输给我们的任何信息的绝对安全。</p>
+      
+      <h2>4. Cookie</h2>
+      <p>本网站使用 Cookie 来存储您的主题偏好设置（明亮/暗色模式），以提供更流畅的浏览体验。您可以随时在浏览器设置中禁用或删除 Cookie。</p>
+      
+      <h2>5. 政策变更</h2>
+      <p>我们保留随时修改本隐私政策的权利。任何变更都将在本页面发布，并即时生效。</p>
+    </div>
+  </div>
+
+ <footer>
+    <div class="container foot">
+      <div style="display:flex; align-items:center; gap:12px">
+        <div class="logo-badge" aria-hidden="true"> </div>
+        <small>© <span id="y"></span> Meyine美银. All rights reserved.</small>
+      </div>
+      <div class="muted" style="display:flex; gap:12px; flex-wrap:wrap">
+        <a href="privacy.html" class="navlink">隐私</a>
+        <a href="terms.html" class="navlink">条款</a>
+        <a href="help.html" class="navlink">帮助</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+    const html = document.documentElement;
+    const btn = document.getElementById('themeBtn');
+    const saved = localStorage.getItem('theme') || 'auto';
+    applyTheme(saved);
+    btn.addEventListener('click', () => {
+      const current = localStorage.getItem('theme') || 'auto';
+      const next = current === 'auto' ? 'dark' : current === 'dark' ? 'light' : 'auto';
+      applyTheme(next, true);
+    });
+    function applyTheme(mode, showToast){
+      if(mode === 'dark'){ html.setAttribute('data-theme','dark'); }
+      else if(mode === 'light'){ html.setAttribute('data-theme','light'); }
+      else { html.removeAttribute('data-theme'); mode = 'auto'; }
+      localStorage.setItem('theme', mode);
+      btn.setAttribute('aria-pressed', mode !== 'auto');
+      btn.textContent = mode === 'dark' ? '🌙 暗色' : mode === 'light' ? '🌞 明亮' : '🌗 主题';
+      if(showToast){
+        const toast = document.createElement('div');
+        toast.textContent = `主题：${btn.textContent.replace('主题','')}`;
+        Object.assign(toast.style, {
+          position:'fixed', inset:'auto 16px 16px auto', padding:'8px 12px',
+          background:'var(--glass)', color:'var(--fg)', border:'1px solid var(--glass-stroke)',
+          borderRadius:'12px', backdropFilter:'var(--blur)', WebkitBackdropFilter:'var(--blur)',
+          boxShadow:'var(--shadow)', zIndex:9999
+        });
+        document.body.appendChild(toast);
+        setTimeout(()=> toast.remove(), 1300);
+      }
+    }
+  </script>
+</body>
+</html>
