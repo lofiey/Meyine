@@ -98,7 +98,7 @@ img{max-width:100%; display:block}
   font-size:14px;
   box-shadow: var(--shadow);
   background-image: url('your-logo-file.png'); /* 确保这里是你的Logo文件路径 */
-  background-size: 140%; /* 将之前的 70% 放大一倍，变为 140% */
+  background-size: 111%; /* 将之前的 70% 放大一倍，变为 140% */
   background-repeat: no-repeat;
   background-position: center;
 }
