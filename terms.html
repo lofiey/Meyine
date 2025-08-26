@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>服务条款</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="logo">
+        <div class="logo-badge"> </div>
+        <div>Meyine</div>
+      </div>
+      <div class="nav-spacer"></div>
+      <div class="nav-links">
+        <a href="index.html" class="navlink">返回主页</a>
+        <button id="themeBtn" class="theme-toggle" aria-pressed="false">🌗 主题</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container detail-content">
+    <h1>服务条款</h1>
+    <p class="muted">在使用本网站前，请仔细阅读以下条款与条件。</p>
+    <div class="content-text">
+      <h2>1. 接受条款</h2>
+      <p>访问和使用本网站，即表示您已阅读、理解并同意接受本条款与条件。如果您不同意这些条款，请不要使用本网站。</p>
+
+      <h2>2. 知识产权</h2>
+      <p>本网站的所有内容，包括但不限于文本、图形、Logo、图标、图像和软件，均为本公司或其内容提供商的财产，并受知识产权法律的保护。未经我们事先书面许可，您不得以任何方式复制、修改、发布或分发本网站的任何内容。</p>
+      
+      <h2>3. 用户行为</h2>
+      <p>您同意在使用本网站时，不会进行以下行为：</p>
+      <ul>
+        <li>违反任何适用法律或法规；</li>
+        <li>侵犯他人的知识产权或隐私权；</li>
+        <li>上传、发布或传输任何非法、骚扰、诽谤或有害的内容；</li>
+        <li>试图未经授权访问本网站的任何部分、服务器或网络。</li>
+      </ul>
+      
+      <h2>4. 免责声明</h2>
+      <p>本网站按“现状”和“可用”基础提供。我们不保证网站将无中断、无错误或无病毒。在适用法律允许的最大范围内，我们不承担任何因使用或无法使用本网站而引起的任何形式的损害责任。</p>
+      
+      <h2>5. 适用法律</h2>
+      <p>本条款与条件受中华人民共和国法律管辖并据其解释。</p>
+    </div>
+  </div>
+
+ <footer>
+    <div class="container foot">
+      <div style="display:flex; align-items:center; gap:12px">
+        <div class="logo-badge" aria-hidden="true"> </div>
+        <small>© <span id="y"></span> GreenCorp. All rights reserved.</small>
+      </div>
+      <div class="muted" style="display:flex; gap:12px; flex-wrap:wrap">
+        <a href="privacy.html" class="navlink">隐私</a>
+        <a href="terms.html" class="navlink">条款</a>
+        <a href="help.html" class="navlink">帮助</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+    const html = document.documentElement;
+    const btn = document.getElementById('themeBtn');
+    const saved = localStorage.getItem('theme') || 'auto';
+    applyTheme(saved);
+    btn.addEventListener('click', () => {
+      const current = localStorage.getItem('theme') || 'auto';
+      const next = current === 'auto' ? 'dark' : current === 'dark' ? 'light' : 'auto';
+      applyTheme(next, true);
+    });
+    function applyTheme(mode, showToast){
+      if(mode === 'dark'){ html.setAttribute('data-theme','dark'); }
+      else if(mode === 'light'){ html.setAttribute('data-theme','light'); }
+      else { html.removeAttribute('data-theme'); mode = 'auto'; }
+      localStorage.setItem('theme', mode);
+      btn.setAttribute('aria-pressed', mode !== 'auto');
+      btn.textContent = mode === 'dark' ? '🌙 暗色' : mode === 'light' ? '🌞 明亮' : '🌗 主题';
+      if(showToast){
+        const toast = document.createElement('div');
+        toast.textContent = `主题：${btn.textContent.replace('主题','')}`;
+        Object.assign(toast.style, {
+          position:'fixed', inset:'auto 16px 16px auto', padding:'8px 12px',
+          background:'var(--glass)', color:'var(--fg)', border:'1px solid var(--glass-stroke)',
+          borderRadius:'12px', backdropFilter:'var(--blur)', WebkitBackdropFilter:'var(--blur)',
+          boxShadow:'var(--shadow)', zIndex:9999
+        });
+        document.body.appendChild(toast);
+        setTimeout(()=> toast.remove(), 1300);
+      }
+    }
+  </script>
+</body>
+</html>
