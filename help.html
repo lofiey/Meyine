@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>帮助中心</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="logo">
+        <div class="logo-badge"> </div>
+        <div>Meyine</div>
+      </div>
+      <div class="nav-spacer"></div>
+      <div class="nav-links">
+        <a href="index.html" class="navlink">返回主页</a>
+        <button id="themeBtn" class="theme-toggle" aria-pressed="false">🌗 主题</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container detail-content">
+    <h1>帮助中心</h1>
+    <p class="muted">如果你在使用本网站时遇到问题，可以参考以下常见问题解答。</p>
+    <div class="content-text">
+      <h2>1. 如何切换主题？</h2>
+      <p>点击导航栏右侧的“主题”按钮，即可在明亮模式、暗色模式和自动模式（跟随系统）之间切换。您的选择会被浏览器本地存储，以便下次访问时保持一致。</p>
+
+      <h2>2. 我可以修改网站内容吗？</h2>
+      <p>当然可以。本主题是开源的，您可以自由修改 HTML、CSS 和 JavaScript 文件以满足您的项目需求。我们建议您在开始修改前备份原始文件。</p>
+      
+      <h2>3. 网站在移动设备上显示不正常怎么办？</h2>
+      <p>本主题采用了响应式设计，应该能适配大部分移动设备。如果遇到显示问题，请首先检查您的浏览器是否为最新版本。如果问题依然存在，欢迎通过联系页面向我们反馈，并附上您的设备型号和浏览器信息。</p>
+      
+      <h2>4. 找不到我需要的功能怎么办？</h2>
+      <p>本主题主要提供基础的页面结构和样式。如果您需要更复杂的功能（如完整的后端数据库、用户登录系统等），您需要在本模板基础上进行二次开发或集成其他技术栈。</p>
+
+      <h2>5. 我要不要保留底部版权信息？</h2>
+      <p>本主题也是耗时制作的，如果喜欢的话，可以底部链接下Meyine相关信息。</p>
+
+      <h2>6. 还有什么方式可以联系到你们？</h2>
+      <p>我们的邮箱：info#meyine.com,请将“#”换成“@”</p>
+    </div>
+  </div>
+
+ <footer>
+    <div class="container foot">
+      <div style="display:flex; align-items:center; gap:12px">
+        <div class="logo-badge" aria-hidden="true"> </div>
+        <small>© <span id="y"></span> Meyine美银. All rights reserved.</small>
+      </div>
+      <div class="muted" style="display:flex; gap:12px; flex-wrap:wrap">
+        <a href="privacy.html" class="navlink">隐私</a>
+        <a href="terms.html" class="navlink">条款</a>
+        <a href="help.html" class="navlink">帮助</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+    const html = document.documentElement;
+    const btn = document.getElementById('themeBtn');
+    const saved = localStorage.getItem('theme') || 'auto';
+    applyTheme(saved);
+    btn.addEventListener('click', () => {
+      const current = localStorage.getItem('theme') || 'auto';
+      const next = current === 'auto' ? 'dark' : current === 'dark' ? 'light' : 'auto';
+      applyTheme(next, true);
+    });
+    function applyTheme(mode, showToast){
+      if(mode === 'dark'){ html.setAttribute('data-theme','dark'); }
+      else if(mode === 'light'){ html.setAttribute('data-theme','light'); }
+      else { html.removeAttribute('data-theme'); mode = 'auto'; }
+      localStorage.setItem('theme', mode);
+      btn.setAttribute('aria-pressed', mode !== 'auto');
+      btn.textContent = mode === 'dark' ? '🌙 暗色' : mode === 'light' ? '🌞 明亮' : '🌗 主题';
+      if(showToast){
+        const toast = document.createElement('div');
+        toast.textContent = `主题：${btn.textContent.replace('主题','')}`;
+        Object.assign(toast.style, {
+          position:'fixed', inset:'auto 16px 16px auto', padding:'8px 12px',
+          background:'var(--glass)', color:'var(--fg)', border:'1px solid var(--glass-stroke)',
+          borderRadius:'12px', backdropFilter:'var(--blur)', WebkitBackdropFilter:'var(--blur)',
+          boxShadow:'var(--shadow)', zIndex:9999
+        });
+        document.body.appendChild(toast);
+        setTimeout(()=> toast.remove(), 1300);
+      }
+    }
+  </script>
+</body>
+</html>
