@@ -342,3 +342,14 @@ footer{ padding: 36px 0 48px; border-top:1px solid var(--stroke);
   .foot { flex-direction: column; align-items: center; text-align: center; }
   .foot > div { margin-bottom: 8px; }
 }
+
+/* ============ 电脑端 contact 图片与 about 图片等高 ============ */
+@media (min-width: 961px) {
+  .contact-content {
+    align-items: stretch;    /* 两列等高 */
+  }
+  .contact-content .contact-image img {
+    height: 100%;            /* 填满父容器高度 */
+    object-fit: cover;       /* 裁剪填充，避免变形 */
+  }
+}
