@@ -97,8 +97,8 @@ img{max-width:100%; display:block}
   color:white;
   font-size:14px;
   box-shadow: var(--shadow);
-  background-image: url('https://img.alicdn.com/imgextra/i4/926581449/O1CN01HYJhkX1MZgzAaIRw8_!!926581449.png'); /* 确保这里是你的Logo文件路径 */
-  background-size: 123%; /* 将之前的 70% 放大一倍，变为 140% */
+  background-image: url('https://img.alicdn.com/imgextra/i4/926581449/O1CN01HYJhkX1MZgzAaIRw8_!!926581449.png');
+  background-size: 123%;
   background-repeat: no-repeat;
   background-position: center;
 }
@@ -222,23 +222,19 @@ img{max-width:100%; display:block}
 .card h3{font-size:18px; margin:6px 0 6px}
 .card p{margin:0; color:var(--muted)}
 
-/* 服务区（条目列表 + 进度条） */
+/* 服务区 */
 .services{
   padding: clamp(36px, 5vw, 72px) 0;
   display:grid; gap:24px; grid-template-columns: 1.2fr .8fr;
 }
 @media (max-width: 960px){ .services{ grid-template-columns: 1fr; } }
-.list{
-  display:grid; gap:14px;
-}
+.list{ display:grid; gap:14px; }
 .list-item{
   display:flex; gap:14px; align-items:flex-start;
   padding:14px; border:1px dashed color-mix(in oklab, var(--brand) 35%, var(--stroke));
   background: color-mix(in oklab, var(--brand-3) 35%, var(--bg)); border-radius: var(--radius-sm);
 }
-.badge{
-  font-size:12px; padding:4px 10px; border-radius:999px; background: var(--brand); color:white; white-space:nowrap
-}
+.badge{ font-size:12px; padding:4px 10px; border-radius:999px; background: var(--brand); color:white; white-space:nowrap }
 .meter{
   height:10px; border-radius:999px; background: color-mix(in oklab, var(--bg) 70%, var(--stroke) 30%);
   overflow:hidden; border:1px solid var(--stroke);
@@ -264,25 +260,7 @@ img{max-width:100%; display:block}
 @media (max-width: 640px){ .cta{ grid-template-columns: 1fr; gap:16px; } }
 .cta p{margin:0; color:var(--muted)}
 
-#contact{
-  background: color-mix(in oklab, var(--brand-3) 60%, var(--bg));
-}
-
-/* 详情页内容样式 */
-.detail-content {
-  padding-top: 60px;
-  padding-bottom: 60px;
-}
-.detail-content h1 {
-  margin-top: 0;
-}
-.detail-content .content-text {
-  margin-top: 40px;
-  line-height: 1.8;
-}
-.detail-content ul li {
-  margin-bottom: 8px;
-}
+#contact{ background: color-mix(in oklab, var(--brand-3) 60%, var(--bg)); }
 
 /* 关于我们区域样式 */
 .about-section {
@@ -296,25 +274,12 @@ img{max-width:100%; display:block}
   grid-template-columns:1fr 1fr;
   max-width:1000px;
 }
-.about-content h2 {
-  font-size:2.2rem;
-  margin:0 0 16px;
-  color:#1b5e20;
-}
-.about-content p {
-  margin:0 0 12px;
-  color:#333;
-  line-height:1.6;
-}
-.about-content p:last-of-type {
-  margin-bottom: 20px;
-  color:#555;
-}
+.about-content h2 { font-size:2.2rem; margin:0 0 16px; color:#1b5e20; }
+.about-content p { margin:0 0 12px; color:#333; line-height:1.6; }
+.about-content p:last-of-type { margin-bottom: 20px; color:#555; }
 
 /* 联系我们区域样式 */
-.contact-section {
-  padding:60px 20px;
-}
+.contact-section { padding:60px 20px; }
 .contact-content {
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -322,25 +287,15 @@ img{max-width:100%; display:block}
   align-items:center;
   max-width:1000px;
 }
-.contact-content .card {
-  display:grid;
-  gap:20px;
-}
-.contact-content .contact-image {
-  text-align:center;
-}
+.contact-content .card { display:grid; gap:20px; }
+.contact-content .contact-image { text-align:center; }
 .contact-content .contact-image img {
+  width:100%;
   border-radius:16px;
   box-shadow:0 6px 24px rgba(0,0,0,.12);
 }
-.contact-form {
-  display:grid;
-  gap:14px;
-}
-.form-group {
-  display:grid;
-  gap:6px;
-}
+.contact-form { display:grid; gap:14px; }
+.form-group { display:grid; gap:6px; }
 .form-input, .form-textarea {
   padding:10px 12px;
   border-radius:10px;
@@ -348,32 +303,42 @@ img{max-width:100%; display:block}
   background:var(--bg);
   color:var(--fg);
 }
-.contact-form h3 {
-  margin:0;
-  font-size:1.6rem;
-  text-align:center;
-}
-.btn-group {
-  display:flex;
-  gap:10px;
-  justify-content:center;
-  flex-wrap:wrap;
-}
+.contact-form h3 { margin:0; font-size:1.6rem; text-align:center; }
+.btn-group { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
 
 /* 页脚 */
-footer{
-  padding: 36px 0 48px; border-top:1px solid var(--stroke);
+footer{ padding: 36px 0 48px; border-top:1px solid var(--stroke);
   background: color-mix(in oklab, var(--bg) 85%, var(--brand-3) 15%);
 }
-.foot{
-  display:flex; gap:18px; align-items:center; flex-wrap:wrap; justify-content:space-between;
-}
+.foot{ display:flex; gap:18px; align-items:center; flex-wrap:wrap; justify-content:space-between; }
 .foot small{ color:var(--muted) }
 
-/* 小装饰：底部波浪 SVG */
-.wave{
-  display:block; width:100%; height:auto; mix-blend-mode:soft-light; opacity:.65
+/* 装饰：底部波浪 */
+.wave{ display:block; width:100%; height:auto; mix-blend-mode:soft-light; opacity:.65 }
+
+/* 焦点样式 */
+:focus-visible{ outline: 2px solid color-mix(in oklab, var(--brand) 60%, #66a); outline-offset: 2px; border-radius: 8px; }
+
+/* ============ 新增：统一图片尺寸 ============ */
+.about-content .about-image {
+  text-align: center;
+}
+.about-content .about-image img {
+  width: 100%;
+  border-radius: 16px;
+  box-shadow: 0 6px 24px rgba(0,0,0,.12);
 }
 
-/* 可访问性增强：键盘焦点样式 */
-:focus-visible{ outline: 2px solid color-mix(in oklab, var(--brand) 60%, #66a); outline-offset: 2px; border-radius: 8px; }
+/* ============ 移动端优化 ============ */
+@media (max-width: 960px) {
+  .about-content,
+  .contact-content { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .nav-inner { flex-direction: column; align-items: flex-start; }
+  .nav-spacer { display: none; }
+  .nav-links { width: 100%; justify-content: space-around; margin-top: 10px; }
+
+  .foot { flex-direction: column; align-items: center; text-align: center; }
+  .foot > div { margin-bottom: 8px; }
+}
